@@ -5,101 +5,246 @@
   <title>Verificar email | KComer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Favicon: logo KComer -->
+  <link rel="icon" type="image/png"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACj0lEQVRIDWP8//8/Ay0BEy0NB5k9agHBEB4NooEPIhZcTvj36cO/r98YGKHyzELCjGzscMX/f/74++4tAyNYGphX//xhkZJmZMZmGlAWK3hZX3RLhf+2jjgIaQh/O3EYruzH9cuPgp1uqQmApYRua4u9mzXh3+9fcAXIDGx2gt35//u3vx8+MnF+B/KADvz/5zfE+d+O7Pu8cRWLpCzrqxc/b11jFpOQ6JzO4xkA9xwaA6cFIO8D0zATOB0DSWZmoM4vu7b8unmVRVLm79vXXLYuPF7BvIER7OpaaIYic3FbwAAPfwZGJqb/P3++m97LZeXAIiH1dfcWZkFhbjcfDl1DaDQgG4nKxmMBI7CYBcUikGJlfVmeySIqLpRZDNTOxMX97+sXDj0jVKOw8/BYgCjG/379yijJKlLe/G5K17fjB34/vPf/x3fJWas4jcyxm4okiscCUBD9//uX4fcfgagkoZzy181ln9ZtZOIGeoiF4e+/Z8kh0vPWchiaIZmGhYmnLGL895OBmVdActIC4eK6F8WpzEIiQnl5oHBjYmFkY/vz6tnT5OAf509jMRVZCDnNIrOfFyQ98LD4eefmjxtX7popv5szCST779+L8qzrYgw35TluKnDckGK6Yyj7/fxpZI1obAY0Ppz77eyJf79+ftm7HZibrosyfDt5BCIFzFDP8hMx7DgF14jGwGnBryeP3vQ13xBnuC7IcE2I4euhPXCd/37+eJYVfV2IAWgx0KZrAgy31IW+Ht0PV4DMwBnJP69d/Pv5EzD0gUHO8O8fq7wSPGCBhZJE72x2XcN/nz+BZIFp4dfPX7dvcJpaM7KywpVBGIxA29CEqMvFk4qoY9GoBQTDcTSIRkAQAQCFl8PySiFP1AAAAABJRU5ErkJggg==">
+
   <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      min-height: 100vh;
+      background: #F8F9FB;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      height: 100vh;
+      justify-content: center;
+      padding: 24px 16px;
+      color: #1B1F2A;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .brand-name {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
     }
 
     .card {
-      background: #ffffff;
-      padding: 28px;
-      border-radius: 10px;
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid #EDEFF3;
+      padding: 32px 28px;
       width: 100%;
       max-width: 420px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+
+    .state-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
     }
 
-    h2 {
-      margin-top: 0;
-      color: #333;
+    .state-icon {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
     }
+    .state-icon.red    { background: #FFE4E4; }
+    .state-icon.green  { background: #DCFCE7; }
+    .state-icon.orange { background: #FFF7ED; }
+    .state-icon svg    { width: 30px; height: 30px; }
 
-    p {
+    .state-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 8px;
+      letter-spacing: -0.3px;
+    }
+    .state-body {
       font-size: 14px;
-      color: #555;
+      color: #6B7280;
+      line-height: 1.6;
+      margin: 0;
     }
 
-    .success {
-      color: #2e7d32;
+    .app-hint {
+      margin-top: 20px;
+      background: #F8F9FB;
+      border: 1px solid #EDEFF3;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #6B7280;
+      line-height: 1.6;
+      text-align: center;
     }
+    .app-hint strong { color: #1B1F2A; }
 
-    .error {
-      color: #e53935;
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid #EDEFF3;
+      border-top-color: #E53935;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-bottom: 20px;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-title { font-size: 18px; font-weight: 700; margin: 0 0 6px; }
+    .loading-sub   { font-size: 14px; color: #6B7280; margin: 0; }
   </style>
 </head>
-
 <body>
 
-<div class="card" id="card">
-  <h2>Verificando email…</h2>
-  <p>Por favor, espera un momento.</p>
-</div>
+  <!-- Logo -->
+  <div class="brand">
+    <img
+      src="data:image/png;base64,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"
+      alt="KComer"
+      style="width: 40px; height: 40px; object-fit: contain;"
+    />
+    <span class="brand-name">KComer</span>
+  </div>
+
+  <div class="card" id="card">
+
+    <!-- Loading -->
+    <div id="state-loading" class="state-screen">
+      <div class="spinner"></div>
+      <p class="loading-title">Verificando tu email</p>
+      <p class="loading-sub">Un momento, por favor…</p>
+    </div>
+
+    <!-- Success -->
+    <div id="state-success" class="state-screen" style="display:none;">
+      <div class="state-icon green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <p class="state-title">Email verificado</p>
+      <p class="state-body">Tu dirección de email ha sido confirmada correctamente.</p>
+      <div class="app-hint">
+        Ya puedes abrir la app <strong>KComer</strong> e iniciar sesión
+        con tu cuenta.
+      </div>
+    </div>
+
+    <!-- Already verified (token used but email is fine) -->
+    <div id="state-already" class="state-screen" style="display:none;">
+      <div class="state-icon green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <p class="state-title">Email ya verificado</p>
+      <p class="state-body">Este enlace ya fue utilizado, pero tu email ya está confirmado.</p>
+      <div class="app-hint">
+        Puedes abrir la app <strong>KComer</strong> e iniciar sesión
+        con normalidad.
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div id="state-error" class="state-screen" style="display:none;">
+      <div class="state-icon red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <p class="state-title" id="error-title">Error al verificar</p>
+      <p class="state-body"  id="error-body">El enlace no es válido.</p>
+      <div class="app-hint">
+        Si el enlace ha caducado, abre la app <strong>KComer</strong>,
+        inicia sesión e indica tu email para que te enviemos uno nuevo.
+      </div>
+    </div>
+
+  </div><!-- /card -->
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("token");
-  const card = document.getElementById("card");
+  const API   = "https://kcomer-api-production.up.railway.app";
+  const token = new URLSearchParams(window.location.search).get("token");
 
-  const API_BASE_URL = "https://kcomer-api-production.up.railway.app";
+  const STATES = ["state-loading","state-success","state-already","state-error"];
 
-  if (!token) {
-    card.innerHTML = `
-      <h2 class="error">Enlace inválido</h2>
-      <p>El enlace de verificación no es correcto.</p>
-    `;
-  } else {
-    verifyEmail(token);
+  function show(id) {
+    STATES.forEach(s => document.getElementById(s).style.display = s === id ? "" : "none");
   }
 
-  async function verifyEmail(token) {
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/api/v1/auth/verify-email?token=${token}`,
-        { method: "POST" }
-      );
+  function showError(title, body) {
+    document.getElementById("error-title").textContent = title;
+    document.getElementById("error-body").textContent  = body;
+    show("state-error");
+  }
 
-      if (response.ok) {
-        card.innerHTML = `
-          <h2 class="success">Email verificado</h2>
-          <p class="success">
-            Tu email ha sido verificado correctamente.
-          </p>
-          <p class="success">
-            Ya puedes volver a la app e iniciar sesión.
-          </p>
-        `;
-      } else {
-        card.innerHTML = `
-          <h2 class="error">Enlace no válido</h2>
-          <p>Este enlace ha expirado o ya fue utilizado.</p>
-        `;
+  async function init() {
+    if (!token) {
+      showError("Enlace inválido", "Este enlace no contiene ningún token de verificación.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/api/v1/auth/verify-email?token=${encodeURIComponent(token)}`, {
+        method: "POST"
+      });
+
+      if (res.ok) {
+        show("state-success");
+        return;
       }
 
-    } catch (error) {
-      card.innerHTML = `
-        <h2 class="error">Error de conexión</h2>
-        <p>No se pudo conectar con el servidor.</p>
-      `;
+      // Parse the specific error from the API
+      let serverMsg = "";
+      try { const d = await res.json(); serverMsg = d?.message ?? ""; } catch (_) {}
+
+      const lower = serverMsg.toLowerCase();
+
+      if (lower.includes("utilizado") || lower.includes("ya está verificado")) {
+        // Token was already used — but that means the email IS verified
+        // (e.g. Apple Mail privacy protection pre-fetched the link)
+        show("state-already");
+      } else if (lower.includes("expirado")) {
+        showError(
+          "El enlace ha caducado",
+          "Este enlace de verificación expiró (válido 24 horas). Abre la app para solicitar uno nuevo."
+        );
+      } else if (lower.includes("inválido") || lower.includes("invalido")) {
+        showError(
+          "Enlace no reconocido",
+          "Este enlace de verificación no existe o ya no es válido."
+        );
+      } else {
+        showError(
+          "No se pudo verificar",
+          serverMsg || "Ha ocurrido un problema al verificar tu email. Inténtalo de nuevo."
+        );
+      }
+
+    } catch (_) {
+      showError(
+        "Error de conexión",
+        "No se pudo conectar con el servidor. Comprueba tu conexión e inténtalo de nuevo."
+      );
     }
   }
+
+  init();
 </script>
 
 </body>
